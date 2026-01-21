@@ -22,8 +22,9 @@ app.use(
   })
 );
 
-app.use(errorHandlerMiddleware);
-
 setupRoutes(app);
+
+// Error handling middleware should be the last middleware
+app.use(errorHandlerMiddleware);
 
 createServer(app);
