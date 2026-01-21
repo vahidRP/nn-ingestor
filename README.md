@@ -23,6 +23,15 @@ A small, production-minded Node.js service that ingests marketing events. This r
 - Developer experience with Husky + lint-staged
 - CI checks for linting, tests, and security
 
+## Design decisions
+
+- AsyncLocalStorage is used to propagate request context (correlationId)
+  without coupling business logic to Express.
+- Logging is structured JSON to support ingestion by tools like Splunk / ITSI.
+- Validation is performed at the boundary using schemas to ensure data quality.
+- Only unit and integration-level tests are included; full E2E tests are out
+  of scope for this assignment.
+
 ## Architecture at a glance
 
 - `src/controllers` map HTTP to service calls
@@ -45,6 +54,23 @@ pnpm dev
 ```
 
 The server reads TLS certs from `certs/` and listens on `PORT` (default `9001`).
+
+## Docker
+
+Structure:
+
+- `Dockerfile` builds a production image (install deps, build TS, run `dist/index.js`).
+- `docker-compose.yml` runs the service, maps `PORT`, loads `.env`, and mounts `certs/` read-only.
+
+How to use:
+
+```bash
+cp .env.example .env
+# set JWT_SECRET and PORT in .env
+docker compose up --build
+```
+
+The container listens on `PORT` and uses certificates from `certs/`.
 
 ## API overview
 
@@ -77,6 +103,7 @@ Example event payload (single or array):
 
 - Unit tests for services
 - Integration-style tests for controllers and middleware
+- Integration tests for API endpoints using Supertest
 - Focus on error paths and validation to avoid regressions
 
 Run tests with:

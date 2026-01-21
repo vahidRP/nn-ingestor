@@ -1,6 +1,9 @@
 import type { AuthenticatedRequest } from '#types/auth.js';
 import type { NextFunction, Request, Response } from 'express';
 
+import { attachAfterMiddlewares, attachBeforeMiddlewares } from '#middlewares/index.js';
+import setupRoutes from '#routes/index.js';
+import express from 'express';
 import { vi } from 'vitest';
 
 type MockRequestOptions = Partial<Request> & {
@@ -52,3 +55,13 @@ export const createMockResponse = (): Response => {
 };
 
 export const createMockNext = (): NextFunction => vi.fn();
+
+export const createMockApp = () => {
+  const app = express();
+
+  attachBeforeMiddlewares(app);
+  setupRoutes(app);
+  attachAfterMiddlewares(app);
+
+  return app;
+};
