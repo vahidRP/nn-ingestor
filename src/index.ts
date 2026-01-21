@@ -1,3 +1,4 @@
+import { correlationIdMiddleware } from '#middlewares/correlationId.middleware.js';
 import errorHandlerMiddleware from '#middlewares/errorHandler.middleware.js';
 import setupRoutes from '#routes/index.js';
 import createServer from '#server.js';
@@ -21,6 +22,8 @@ app.use(
     origin: ['https://localhost'],
   })
 );
+
+app.use(correlationIdMiddleware);
 
 setupRoutes(app);
 

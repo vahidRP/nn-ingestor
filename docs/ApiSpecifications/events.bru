@@ -1,33 +1,24 @@
 meta {
-  name: login
+  name: events
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
-  url: {{API_V1_URL}}/auth/login
+  url: {{API_V1_URL}}/events
   body: json
-  auth: inherit
+  auth: bearer
 }
 
-headers {
-  Accept: application/json
-  Content-Type: application/json
+auth:bearer {
+  token: {{auth_token}}
 }
 
 body:json {
   {
-    "email": "asd@gmail.com",
-    "password": "sthing"
+    "eventType": "page_view",
+    "timestamp": "2026-01-21T16:33:55.098Z"
   }
-}
-
-script:post-response {
-  const resBody = res.getBody();
-  const token = resBody.token;
-  
-  bru.setEnvVar("auth_token", token);
-  
 }
 
 settings {
@@ -39,18 +30,13 @@ example {
   name: response
   
   request: {
-    url: {{API_V1_URL}}/auth/login
+    url: {{API_V1_URL}}/events
     method: POST
     mode: json
-    headers: {
-      Accept: application/json
-      Content-Type: application/json
-    }
-  
     body:json: {
       {
-        "email": "asd@gmail.com",
-        "password": "sthing"
+        "eventType": "page_view",
+        "timestamp": "2026-01-21T16:33:55.098Z"
       }
     }
   }
@@ -72,23 +58,23 @@ example {
       vary: Origin, Accept-Encoding
       access-control-allow-credentials: true
       content-type: application/json; charset=utf-8
-      content-length: 185
-      etag: W/"b9-vXIQOA8MY3wJmr0s6bRaU/B4R/Q"
-      date: Wed, 21 Jan 2026 15:38:05 GMT
+      content-length: 21
+      etag: W/"15-TUiEn6D2kXycV+2VhoDpoeciOCs"
+      date: Wed, 21 Jan 2026 16:34:02 GMT
       connection: keep-alive
       keep-alive: timeout=5
     }
   
     status: {
-      code: 200
-      text: OK
+      code: 202
+      text: Accepted
     }
   
     body: {
       type: json
       content: '''
         {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MzA1OTIwNjM5MCwiaWF0IjoxNzY5MDA5ODg1LCJleHAiOjE3NjkwMTM0ODV9.NNro7jnYi3k5hRDG07tzMTcR26rLg_wxkY_JImQS9UI"
+          "status": "accepted"
         }
       '''
     }
