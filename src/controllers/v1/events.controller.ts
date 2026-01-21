@@ -1,3 +1,4 @@
+import { logger } from '#infra/logger.js';
 import { marketingEventsSchema } from '#schemas/event.schema.js';
 import * as eventsService from '#services/events.service.js';
 import { AuthenticatedRequest } from '#types/auth.js';
@@ -10,13 +11,7 @@ export const postEvents: RequestHandler = (req: AuthenticatedRequest, res) => {
   const parseResult = marketingEventsSchema.safeParse(req.body);
 
   if (!parseResult.success) {
-    console.warn(
-      {
-        correlationId,
-        errors: z.treeifyError(parseResult.error),
-      },
-      'Invalid event payload'
-    );
+    logger.warn(z.treeifyError(parseResult.error), 'Invalid event payload');
 
     throw parseResult.error;
   }
@@ -27,13 +22,13 @@ export const postEvents: RequestHandler = (req: AuthenticatedRequest, res) => {
       ...(req.user && { userId: req.user.id }),
     });
 
-    console.info('Events processed successfully');
+    logger.info('Events processed successfully');
 
     return res.status(202).json({
       status: 'accepted',
     });
   } catch (error) {
-    console.error(
+    logger.error(
       {
         correlationId,
         error,

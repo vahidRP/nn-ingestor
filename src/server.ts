@@ -1,3 +1,4 @@
+import { logger } from '#infra/logger.js';
 import { Express } from 'express';
 import * as fs from 'node:fs';
 import spdy, { ServerOptions } from 'spdy';
@@ -13,7 +14,7 @@ const createServer = (app: Express) => {
   const server = spdy.createServer(options, app);
 
   server.listen(port, () => {
-    console.log('Listening on port: ' + port + '.');
+    logger.info('Listening on port: ' + port + '.');
   });
 
   process.on('SIGTERM', () => {
