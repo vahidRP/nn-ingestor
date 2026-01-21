@@ -19,7 +19,6 @@ pnpm-debug.log*
 # OS/editor
 .DS_Store
 .idea/
-.vscode/
 *.swp
 
 # test coverage
