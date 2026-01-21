@@ -1,13 +1,29 @@
-import express, { Request, Response } from 'express';
+import errorHandlerMiddleware from '#middlewares/errorHandler.middleware.js';
+import setupRoutes from '#routes/index.js';
+import createServer from '#server.js';
+import compression from 'compression';
+import cors from 'cors';
+import express from 'express';
+import helmet from 'helmet';
 
 const app = express();
-const port: string = process.env.PORT ?? '9001';
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-  console.log('Response sent');
-});
+// compress all responses
+app.use(compression());
 
-app.listen(port, (): void => {
-  console.log(`App listening on port ${port}`);
-});
+app.use(helmet());
+
+app.use(express.json({ strict: true }));
+
+app.use(
+  cors({
+    credentials: true,
+    origin: ['https://localhost'],
+  })
+);
+
+app.use(errorHandlerMiddleware);
+
+setupRoutes(app);
+
+createServer(app);
