@@ -5,6 +5,6 @@
     "rootDir": "./src",
     "esModuleInterop": false
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["dist"]
 }
