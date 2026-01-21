@@ -1,3 +1,4 @@
+import { logger } from '#infra/logger.js';
 import { MarketingEventsInput } from '#schemas/event.schema.js';
 
 let payload: MarketingEventsInput = [];
@@ -18,7 +19,7 @@ export const process = async (
     ...additionalPayload,
   }));
 
-  console.log('Received Events!', mergedPayloadEvents);
+  logger.info({ events: mergedPayloadEvents }, 'Received Events!');
   payload.push(...mergedPayloadEvents);
 
   // Mocked external call
@@ -26,7 +27,7 @@ export const process = async (
 
   payload = payload.slice(0, -mergedPayloadEvents.length); // Clear payload after processing
 
-  console.log(
+  logger.info(
     `Processed ${mergedPayloadEvents.length} events! Total in payload: ${payload.length}`
   );
 
