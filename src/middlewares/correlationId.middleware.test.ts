@@ -22,6 +22,7 @@ describe('correlationId.middleware', () => {
     correlationIdMiddleware(req, res, next);
 
     expect(req.headers['x-correlation-id']).toBe('corr-123');
+    expect(res.setHeader).toHaveBeenCalledWith('X-Correlation-ID', 'corr-123');
     expect(randomUUID).toHaveBeenCalled();
     expect(next).toHaveBeenCalled();
   });
