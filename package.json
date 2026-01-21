@@ -1,0 +1,13 @@
+{
+  "name": "nn-ingestor",
+  "version": "1.0.0",
+  "description": "Event Ingestion & Marketing Data API",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Vahid Ramezanipour",
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.0"
+}
