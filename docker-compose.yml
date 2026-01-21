@@ -1,0 +1,12 @@
+services:
+  nn-ingestor:
+    build:
+      context: .
+      args:
+        PORT: ${PORT}
+    ports:
+      - '${PORT}:${PORT}'
+    env_file:
+      - .env
+    volumes:
+      - ./certs:/app/certs:ro

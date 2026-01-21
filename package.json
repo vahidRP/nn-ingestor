@@ -4,7 +4,7 @@
   "description": "Event Ingestion & Marketing Data API",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch --env-file .env src/index.ts",
+    "dev": "tsx --watch --env-file .env --conditions=development src/index.ts",
     "start": "node --env-file .env dist/index.js",
     "build": "tsc -p tsconfig.build.json",
     "type-check": "tsc --noEmit",
@@ -58,7 +58,11 @@
     "vitest": "^4.0.17"
   },
   "imports": {
-    "#*": "./src/*"
+    "#*": {
+      "types": "./src/*",
+      "development": "./src/*",
+      "default": "./dist/*"
+    }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
