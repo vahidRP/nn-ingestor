@@ -1,4 +1,4 @@
-import { JwtUserPayload } from '#schemas/auth.js';
+import { JwtUserPayload } from '#schemas/auth.schema.js';
 import { Request as BaseRequest } from 'express';
 
 export interface AuthenticatedRequest extends BaseRequest {

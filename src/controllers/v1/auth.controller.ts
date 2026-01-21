@@ -1,4 +1,4 @@
-import { loginRequestSchema } from '#schemas/auth.js';
+import { loginRequestSchema } from '#schemas/auth.schema.js';
 import { findUserByEmail } from '#services/users.service.js';
 import { AuthenticatedRequest } from '#types/auth.js';
 import { RequestHandler } from 'express';

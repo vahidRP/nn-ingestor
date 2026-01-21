@@ -1,4 +1,4 @@
-import { jwtUserPayloadSchema } from '#schemas/auth.js';
+import { jwtUserPayloadSchema } from '#schemas/auth.schema.js';
 import { AuthenticatedRequest } from '#types/auth.js';
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
