@@ -13,9 +13,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest",
-    "test:run": "vitest --run",
+    "test:run": "vitest --run --passWithNoTests",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "Vahid Ramezanipour",
@@ -36,6 +37,8 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-perfectionist": "^5.3.1",
     "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.8.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
@@ -44,5 +47,14 @@
   },
   "imports": {
     "#*": "./src/*"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint",
+      "prettier --check"
+    ],
+    "*.{json,yml,yaml,md}": [
+      "prettier --check"
+    ]
   }
 }
