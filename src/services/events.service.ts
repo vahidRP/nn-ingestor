@@ -1,6 +1,8 @@
 import { logger } from '#infra/logger.js';
 import { MarketingEventsInput } from '#schemas/event.schema.js';
 import { EnrichedMarketingEventInput } from '#types/events.js';
+import { anonymizeIp, hashValue, toCamelCase } from '#utils/string.js';
+import { stripQueryParams } from '#utils/url.js';
 import { createHash } from 'node:crypto';
 
 let payload: MarketingEventsInput = [];
@@ -40,36 +42,6 @@ const PII_KEYS = new Set(['email', 'phone']);
  * - Forward to Adobe Experience Platform
  * - Push to a queue (SQS / Kafka)
  */
-const toCamelCase = (value: string): string => {
-  const normalized = value.replace(/[-_]+(.)?/g, (_, chr: string) =>
-    chr ? chr.toUpperCase() : ''
-  );
-
-  return normalized.charAt(0).toLowerCase() + normalized.slice(1);
-};
-
-const hashValue = (value: string): string =>
-  `hash:${createHash('sha256').update(value).digest('hex')}`;
-
-const anonymizeIp = (value: string): null | string => {
-  const ipv4Parts = value.split('.');
-  if (ipv4Parts.length === 4) {
-    return `${ipv4Parts[0]}.${ipv4Parts[1]}.${ipv4Parts[2]}.0`;
-  }
-
-  return null;
-};
-
-const stripQueryParams = (value: string): string => {
-  try {
-    const parsed = new URL(value);
-    parsed.search = '';
-    parsed.hash = '';
-    return parsed.toString();
-  } catch {
-    return value;
-  }
-};
 
 const shouldDropForConsent = (context?: Record<string, unknown>): boolean => {
   if (!context) return false;
