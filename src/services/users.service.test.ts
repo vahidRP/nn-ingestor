@@ -1,4 +1,4 @@
-import { hashStringToNumber } from '#utils/hashStringToNumber.js';
+import { hashStringToNumber } from '#utils/string.js';
 import { describe, expect, it } from 'vitest';
 
 import { findUserByEmail } from './users.service.js';
