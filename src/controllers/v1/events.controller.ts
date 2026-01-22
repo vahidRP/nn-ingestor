@@ -5,7 +5,7 @@ import { AuthenticatedRequest } from '#types/auth.js';
 import { RequestHandler } from 'express';
 import z from 'zod';
 
-export const postEvents: RequestHandler = (req: AuthenticatedRequest, res) => {
+export const postEvents: RequestHandler = async (req: AuthenticatedRequest, res) => {
   const correlationId = req.header('x-correlation-id');
 
   const parseResult = marketingEventsSchema.safeParse(req.body);
@@ -17,8 +17,7 @@ export const postEvents: RequestHandler = (req: AuthenticatedRequest, res) => {
   }
 
   try {
-    // Won't await to respond faster and process events in background
-    void eventsService.process(parseResult.data, {
+    await eventsService.process(parseResult.data, {
       ...(req.user && { userId: req.user.id }),
     });
 
