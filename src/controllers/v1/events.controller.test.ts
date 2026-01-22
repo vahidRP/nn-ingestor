@@ -25,24 +25,24 @@ describe('events.controller', () => {
     vi.clearAllMocks();
   });
 
-  it('throws on invalid event payload and logs a warning', () => {
+  it('throws on invalid event payload and logs a warning', async () => {
     const req = createMockAuthRequest({
       body: { eventType: 'invalid', timestamp: '2025-01-01T00:00:00Z' },
     });
     const res = createMockResponse();
 
-    expect(() => postEvents(req, res, vi.fn())).toThrow();
+    await expect(postEvents(req, res, vi.fn())).rejects.toThrow();
     expect(logger.warn).toHaveBeenCalledOnce();
   });
 
-  it('accepts valid events and processes with user id', () => {
+  it('accepts valid events and processes with user id', async () => {
     const req = createMockAuthRequest({
       body: { eventType: 'page_view', timestamp: '2025-01-01T00:00:00Z' },
       user: { email: 'user@example.com', id: 42, name: 'user', role: 'user' },
     });
     const res = createMockResponse();
 
-    postEvents(req, res, vi.fn());
+    await postEvents(req, res, vi.fn());
 
     expect(mockProcessEvents).toHaveBeenCalledWith(
       [
@@ -58,7 +58,7 @@ describe('events.controller', () => {
     expect(logger.info).toHaveBeenCalledWith('Events processed successfully');
   });
 
-  it('returns 500 when processing throws synchronously', () => {
+  it('returns 500 when processing throws synchronously', async () => {
     const req = createMockAuthRequest({
       body: { eventType: 'page_view', timestamp: '2025-01-01T00:00:00Z' },
       header: vi.fn().mockReturnValue('corr-123'),
@@ -69,7 +69,7 @@ describe('events.controller', () => {
       throw new Error('boom');
     });
 
-    postEvents(req, res, vi.fn());
+    await postEvents(req, res, vi.fn());
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Internal server error' });
